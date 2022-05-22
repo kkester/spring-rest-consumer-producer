@@ -1,0 +1,28 @@
+plugins {
+	id 'org.springframework.boot' version '2.6.6'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'java'
+}
+
+repositories {
+	mavenCentral()
+}
+
+subprojects {
+
+	group = 'io.pivotal'
+	version = '0.0.1-SNAPSHOT'
+
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+	apply plugin: 'java'
+
+	repositories {
+		mavenCentral()
+	}
+
+	compileJava {
+		sourceCompatibility = '11'
+	}
+
+}

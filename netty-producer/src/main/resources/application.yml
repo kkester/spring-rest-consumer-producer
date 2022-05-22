@@ -1,0 +1,6 @@
+server:
+  port: 8083
+
+spring:
+  datasource:
+    url: r2dbc:h2:mem:default;DB_CLOSE_DELAY=-1;

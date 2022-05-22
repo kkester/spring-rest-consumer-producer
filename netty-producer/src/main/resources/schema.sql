@@ -1,0 +1,7 @@
+CREATE TABLE BOOK_ENTITY
+(
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    title VARCHAR2,
+    author VARCHAR2,
+    cost NUMERIC(20, 2)
+);
