@@ -15,6 +15,7 @@ public class BookRouter {
     RouterFunction<ServerResponse> bookFunctions(BookHandler bookHandler) {
         return route(GET("/books"), bookHandler::all)
                 .andRoute(GET("/books/new"), bookHandler::getNew)
+                .andRoute(GET("/books/{id}"), bookHandler::get)
                 .andRoute(POST("/books"), bookHandler::create);
     }
 }

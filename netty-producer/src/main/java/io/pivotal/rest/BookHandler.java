@@ -41,4 +41,16 @@ public class BookHandler {
     public Mono<ServerResponse> all(ServerRequest request) {
         return ServerResponse.ok().body(bookProviderService.getAllBooks(), Book.class);
     }
+
+    public Mono<ServerResponse> get(ServerRequest request) {
+        try {
+            Long id = Long.parseLong(request.pathVariable("id"));
+            return bookProviderService.getBookById(id)
+                    .flatMap(post -> ServerResponse.ok().body(Mono.just(post), Book.class))
+                    .onErrorResume(ResourceNotFoundException.class, errorHandler::handleNotFoundError)
+                    .onErrorResume(errorHandler::operationFailed);
+        } catch (NumberFormatException error) {
+            return errorHandler.handleNumberFormatError(error);
+        }
+    }
 }

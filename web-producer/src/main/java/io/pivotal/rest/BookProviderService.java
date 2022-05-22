@@ -3,8 +3,10 @@ package io.pivotal.rest;
 import com.github.javafaker.Faker;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -12,9 +14,10 @@ public class BookProviderService {
 
     private final BookRepository bookRepository;
 
-    public Flux<Book> getAllBooks() {
-        return bookRepository.findAll()
-                .map(this::convert);
+    public List<Book> getAllBooks() {
+        return bookRepository.findAll().stream()
+                .map(this::convert)
+                .collect(Collectors.toList());
     }
 
     private Book convert(BookEntity bookEntity) {
@@ -25,16 +28,16 @@ public class BookProviderService {
                 .build();
     }
 
-    public Mono<Book> getNewBook() {
+    public Book getNewBook() {
         Faker faker = new Faker();
-        return Mono.just(Book.builder()
+        return Book.builder()
                 .title(faker.book().title())
                 .author(faker.book().author())
                 .cost(faker.number().randomDouble(2, 9, 1000))
-                .build());
+                .build();
     }
 
-    public Mono<BookEntity> save(Book book) {
+    public BookEntity save(Book book) {
         BookEntity bookEntity = BookEntity.builder()
                 .title(book.getTitle())
                 .author(book.getAuthor())
@@ -43,13 +46,13 @@ public class BookProviderService {
         return bookRepository.save(bookEntity);
     }
 
-    public Mono<Book> getBookById(Long id) {
+    public Book getBookById(UUID id) {
         return bookRepository.findById(id)
                 .map(bookEntity -> Book.builder()
                         .title(bookEntity.getTitle())
                         .author(bookEntity.getAuthor())
                         .cost(bookEntity.getCost())
                         .build())
-                .switchIfEmpty(Mono.error(new ResourceNotFoundException("Book Not Found")));
+                .orElseThrow(() -> new ResourceNotFoundException("Book Not Found"));
     }
 }
