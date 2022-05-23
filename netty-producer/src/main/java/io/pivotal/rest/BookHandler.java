@@ -39,7 +39,7 @@ public class BookHandler {
     }
 
     public Mono<ServerResponse> all(ServerRequest request) {
-        return ServerResponse.ok().body(bookProviderService.getAllBooks(), Book.class);
+        return ServerResponse.ok().body(bookProviderService.getAllBooks().log(), Book.class);
     }
 
     public Mono<ServerResponse> get(ServerRequest request) {

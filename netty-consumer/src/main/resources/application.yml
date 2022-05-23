@@ -1,0 +1,8 @@
+server:
+  port: 8082
+
+spring:
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      write-dates-as-timestamps: false
