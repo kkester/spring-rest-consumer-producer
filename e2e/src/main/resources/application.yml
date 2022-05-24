@@ -1,0 +1,3 @@
+test-props:
+  environment: ${ENV}
+  dataCenter: ${DC}
