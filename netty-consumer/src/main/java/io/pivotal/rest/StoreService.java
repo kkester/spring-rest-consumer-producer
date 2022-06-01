@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class StoreService {
 
-    private final BookService bookService;
+    private final BookReactiveService bookService;
     private Store store;
 
     public Mono<Store> getStore() {

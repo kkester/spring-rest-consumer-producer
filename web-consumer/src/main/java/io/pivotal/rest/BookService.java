@@ -42,6 +42,5 @@ public class BookService {
                 .toBodilessEntity()
                 .doOnSuccess(clientResponse -> log.info("Book created {}", clientResponse.getHeaders().get(HttpHeaders.LOCATION)))
                 .subscribe();
-
     }
 }

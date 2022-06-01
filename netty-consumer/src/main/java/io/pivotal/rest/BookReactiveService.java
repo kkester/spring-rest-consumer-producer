@@ -11,7 +11,7 @@ import reactor.core.publisher.Flux;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class BookService {
+public class BookReactiveService {
 
     private final WebClient webClient;
 

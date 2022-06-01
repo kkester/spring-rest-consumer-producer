@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class StoreStocker {
 
-    private final BookService bookService;
+    private final BookReactiveService bookService;
 
     @Scheduled(fixedDelay = 5000)
     void stockStore() {

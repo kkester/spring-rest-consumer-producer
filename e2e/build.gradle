@@ -25,7 +25,7 @@ dependencies {
 }
 
 test {
-    String type = "$System.env.TYPE";
+    String type = "$System.properties.TYPE";
     systemProperty "cucumber.filter.tags", '@'+type;
     useJUnitPlatform()
 }
