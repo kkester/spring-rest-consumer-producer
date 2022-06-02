@@ -11,3 +11,15 @@ spring:
     default-property-inclusion: non_null
     serialization:
       write-dates-as-timestamps: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,fruits
+  endpoint:
+    health:
+      group:
+        custom:
+          show-components: always
+          show-details: always
