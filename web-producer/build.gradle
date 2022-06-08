@@ -6,6 +6,10 @@ group = 'io.pivotal'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+ext {
+    set('openApiVersion', '1.6.8')
+}
+
 dependencies {
     implementation project(':common')
 
@@ -15,6 +19,9 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'com.github.javafaker:javafaker:1.0.2'
+
+    implementation "org.springdoc:springdoc-openapi-ui:${openApiVersion}"
+//    implementation "org.springdoc:springdoc-openapi-security:${openApiVersion}"
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
