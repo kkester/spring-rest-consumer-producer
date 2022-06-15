@@ -12,22 +12,34 @@ import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2Clien
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.time.format.DateTimeFormatter;
+
 import static java.util.Collections.singletonList;
+import static java.util.Optional.ofNullable;
 
 @Configuration
 public class OpenApiConfig {
     private static final String SPRING_OAUTH = "spring_oauth";
+    private static final String OKTA = "okta";
 
     @Bean
-    public OpenAPI api() { //OAuth2ClientProperties oktaOAuth2Properties) {
-//        String issuer = getIssuerUri(oktaOAuth2Properties);
+    public OpenAPI api(OAuth2ClientProperties oktaOAuth2Properties) {
+        String issuer = getIssuerUri(oktaOAuth2Properties);
         return new OpenAPI()
-//                .components(new Components().addSecuritySchemes(SPRING_OAUTH, oauth2Flow(issuer)))
-//                .security(singletonList(new SecurityRequirement().addList(SPRING_OAUTH)))
+                .components(new Components().addSecuritySchemes(SPRING_OAUTH, oauth2Flow(issuer)))
+                .security(singletonList(new SecurityRequirement().addList(SPRING_OAUTH)))
                 .info(info());
     }
 
-/*
+    public String getIssuerUri(OAuth2ClientProperties properties) {
+
+        return ofNullable(properties)
+                .map(OAuth2ClientProperties::getProvider)
+                .map(map -> map.get(OKTA))
+                .map(OAuth2ClientProperties.Provider::getIssuerUri)
+                .orElse(null);
+    }
+
     private SecurityScheme oauth2Flow(String issuer) {
         return new SecurityScheme()
                 .type(SecurityScheme.Type.OAUTH2)
@@ -38,7 +50,6 @@ public class OpenApiConfig {
                                 .tokenUrl(issuer + "/v1/token")
                                 .scopes(new Scopes())));
     }
- */
 
     private Info info() {
         return new Info()

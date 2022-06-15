@@ -11,6 +11,44 @@ spring:
     default-property-inclusion: non_null
     serialization:
       write-dates-as-timestamps: false
+  security:
+    oauth2:
+      client:
+        provider:
+          okta:
+            authorization-uri: ${spring.security.oauth2.client.provider.okta.issuer-uri}/v1/authorize
+            token-uri: ${spring.security.oauth2.client.provider.okta.issuer-uri}/v1/token
+            user-info-uri: ${spring.security.oauth2.client.provider.okta.issuer-uri}/v1/userinfo
+            jwk-set-uri: ${spring.security.oauth2.client.provider.okta.issuer-uri}/v1/keys
+            user-name-attribute: email
+        registration:
+          okta:
+            client-authentication-method: none
+            scope:
+              - openid
+              - profile
+              - email
+      resourceserver:
+        jwt:
+          issuer-uri: ${spring.security.oauth2.client.provider.okta.issuer-uri}
+          jwk-set-uri: ${spring.security.oauth2.client.provider.okta.issuer-uri}/v1/keys
+  config:
+    import: secrets.yml
+
+springdoc:
+  swagger-ui:
+    enabled: true
+    csrf:
+      enabled: true
+      cookie-name: XSRF-TOKEN
+      header-name: X-XSRF-TOKEN
+    oauth:
+      client-id: 0oa5c68bcsLHj3CEW5d7
+      use-pkce-with-authorization-code-grant: false
+      scopes:
+        - openid
+        - profile
+        - email
 
 management:
   endpoints:
