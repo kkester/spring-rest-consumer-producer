@@ -2,18 +2,26 @@ package io.pivotal.rest;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.lang3.CharSet;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.util.StreamUtils;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,6 +46,9 @@ class BookControllerTest {
     @MockBean
     BookProviderService bookProviderService;
 
+    @Value("classpath:example.json")
+    Resource resource;
+
     @Test
     void testGetAllBooks() throws Exception {
         Book book = Book.builder().title("The Title").author("Mr Author").cost(1.99).build();
@@ -47,9 +58,11 @@ class BookControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        List<Book> results = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), new TypeReference<>() {
-        });
+        String responseContent = mvcResult.getResponse().getContentAsString();
+        List<Book> results = objectMapper.readValue(responseContent, new TypeReference<>() {});
         assertThat(results).containsExactly(book);
+
+        JSONAssert.assertEquals(StreamUtils.copyToString(resource.getInputStream(), StandardCharsets.UTF_8), responseContent, JSONCompareMode.STRICT);
     }
 
     @Test
