@@ -3,9 +3,13 @@ package io.pivotal.rest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.ClientResponse;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 import java.util.List;
 
@@ -31,8 +35,7 @@ public class BookService {
         Book newBook = webClient.get()
                 .uri("/books/new")
                 .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToMono(Book.class)
+                .exchangeToMono(this::handleResponse)
                 .block();
 
         webClient.post()
@@ -42,5 +45,15 @@ public class BookService {
                 .toBodilessEntity()
                 .doOnSuccess(clientResponse -> log.info("Book created {}", clientResponse.getHeaders().get(HttpHeaders.LOCATION)))
                 .subscribe();
+    }
+
+    private Mono<Book> handleResponse(ClientResponse clientResponse) {
+        Mono<Book> resultMono;
+        if (HttpStatus.OK.equals(clientResponse.statusCode())) {
+            resultMono = clientResponse.bodyToMono(Book.class);
+        } else {
+            resultMono = Mono.error(new RuntimeException());
+        }
+        return resultMono;
     }
 }
