@@ -38,7 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // Allow CORS option calls
                 .antMatchers(OPTIONS, ALL_URL_PATTERN).permitAll()
-                .antMatchers("/swagger-ui/**", "/v3/**").permitAll()
+                .antMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/**").permitAll()
 //                .antMatchers(GET, ENVIRONMENT_CONFIG_SUFFIX).permitAll()
                 .anyRequest().authenticated()
                 .and()
