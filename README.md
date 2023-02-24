@@ -1,4 +1,11 @@
-# Getting Started
+### Overview
+
+This PoC demonstrates the following architecture, design, and coding strategies:
+
+1. Example API producer and consumer using Spring Web with Tomcat
+2. Example API producer and consumer using Spring Webflux with Netty
+3. Router Functions
+4. Mock Web Server for Tests
 
 ### Reference Documentation
 For further reference, please consider the following sections:
