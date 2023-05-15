@@ -6,6 +6,8 @@ This PoC demonstrates the following architecture, design, and coding strategies:
 2. Example API producer and consumer using Spring Webflux with Netty
 3. Router Functions
 4. Mock Web Server for Tests
+5. Swagger API Documentation
+6. Define custom actuator endpoints
 
 ### Reference Documentation
 For further reference, please consider the following sections:
